@@ -54,7 +54,7 @@ class Paragraph:
             with self.callback_lock:
                 self.text.configure(state='normal')
                 self.text.delete('1.0', tk.END)
-                self.text.insert(tk.END, message + "\n")
+                self.text.insert(tk.END, message)
                 self.text.configure(state='disabled')
         result = self.channel.queue_declare(queue='')
         queue_name = result.method.queue
