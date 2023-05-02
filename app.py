@@ -23,11 +23,11 @@ class TextEditorGUI:
 
     def start(self):
         print("started threads")
-        threading.Thread(target=self.paragraphs[0].receive_message, args=()).start()
-        threading.Thread(target=self.paragraphs[0].receive_editor, args=()).start()
-        # for paragraph in self.paragraphs:
-        #     t = threading.Thread(target=paragraph.receive_message, args=())
-        #     t.start()
+        # threading.Thread(target=self.paragraphs[0].receive_message, args=()).start()
+        # threading.Thread(target=self.paragraphs[0].receive_editor, args=()).start()
+        for paragraph in self.paragraphs:
+            threading.Thread(target=paragraph.receive_message, args=()).start()
+            threading.Thread(target=paragraph.receive_editor, args=()).start()
         self.window.mainloop()
 
 

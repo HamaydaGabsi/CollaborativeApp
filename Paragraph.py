@@ -22,7 +22,9 @@ class Paragraph:
         self.text.pack(side='top', padx=20, pady=5)
         self.text.configure(state='disabled')
         self.label = tk.Label(text=name)
+        self.editLabel = tk.Label(text="No one is editing")
         self.label.pack(side='top', pady=5)
+        self.editLabel.pack(side='top', pady=5)
         self.button = tk.Button(
             text='Edit', command=lambda: self.toggle_edit())
         self.button.pack(side='top', pady=5)
@@ -33,11 +35,8 @@ class Paragraph:
         def callback(ch, method, properties, body):
             message = body.decode('utf-8')
             print(f"received {message}")
-            # with self.callback_lock:
-            #     self.text.configure(state='normal')
-            #     self.text.delete('1.0', tk.END)
-            #     self.text.insert(tk.END, message + "\n")
-            #     self.text.configure(state='disabled')
+            self.editLabel.configure(text=message)
+
         result = self.channel2.queue_declare(queue='')
         queue_name = result.method.queue
         self.channel2.queue_bind(
@@ -84,7 +83,7 @@ class Paragraph:
                 self.channel2.basic_publish(
                     exchange=self.User_Exchange_Name, routing_key='', body=self.user_name+" is editing")
                 self.text.configure(state='normal')
-                self.button.configure(text='Stop Editing')
+                self.button.configure(text='Save')
                 self.old_text = self.text.get("1.0", tk.END)
                 print("sent request")
                 print(self.old_text)
