@@ -3,6 +3,7 @@ import threading
 import tkinter as tk
 from Access import Access
 
+
 class Paragraph:
     def __init__(self, name, connection_params, user_name):
         self.name = name
@@ -29,6 +30,7 @@ class Paragraph:
             text='Edit', command=lambda: self.toggle_edit())
         self.button.pack(side='top', pady=5)
         self.callback_lock = threading.Lock()
+
     def receive_editor(self):
         print(f"listening for editor on {self.name}")
 
@@ -71,10 +73,10 @@ class Paragraph:
             if self.old_text != self.text.get("1.0", tk.END):
                 self.channel.basic_publish(
                     exchange=self.Exchange_Name, routing_key='', body=self.text.get("1.0", tk.END))
-                
+
             Access.releaseAccess(self.name)
             self.channel2.basic_publish(
-                    exchange=self.User_Exchange_Name, routing_key='', body="No one is editing")
+                exchange=self.User_Exchange_Name, routing_key='', body="No one is editing")
             self.text.configure(state='disabled')
             self.button.configure(text='Edit')
         else:

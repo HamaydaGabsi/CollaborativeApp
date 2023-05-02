@@ -16,9 +16,9 @@ class TextEditorGUI:
         # connections
         connection_params = pika.ConnectionParameters(host='localhost')
         self.paragraphs = [
-            Paragraph("paragraph1", connection_params,self.user.name),
-            Paragraph("paragraph2", connection_params,self.user.name),
-            Paragraph("paragraph3", connection_params,self.user.name),
+            Paragraph("paragraph1", connection_params, self.user.name),
+            Paragraph("paragraph2", connection_params, self.user.name),
+            Paragraph("paragraph3", connection_params, self.user.name),
         ]
 
     def start(self):

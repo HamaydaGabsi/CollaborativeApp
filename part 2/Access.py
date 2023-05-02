@@ -17,7 +17,7 @@ class Access:
 
             channel.basic_publish(
                 exchange='', routing_key=queue_name, body=user_name)
-  
+
             return True
 
     def releaseAccess(name):
