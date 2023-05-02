@@ -9,7 +9,7 @@ class Paragraph:
         self.user_name = user_name
         self.old_text = ""
         self.Exchange_Name = "TextAreaExchange" + self.name
-        self.User_Exchange_Name = "UserExchange" + self.user_name
+        self.User_Exchange_Name = "UserExchange" + self.name
         connection = pika.BlockingConnection(connection_params)
         self.channel = connection.channel()
         self.channel.exchange_declare(
@@ -72,14 +72,17 @@ class Paragraph:
             if self.old_text != self.text.get("1.0", tk.END):
                 self.channel.basic_publish(
                     exchange=self.Exchange_Name, routing_key='', body=self.text.get("1.0", tk.END))
+                
             Access.releaseAccess(self.name)
+            self.channel2.basic_publish(
+                    exchange=self.User_Exchange_Name, routing_key='', body="No one is editing")
             self.text.configure(state='disabled')
             self.button.configure(text='Edit')
         else:
             print('state disabled')
             if Access.requestAccess(self.name, self.user_name):
                 self.channel2.basic_publish(
-                    exchange=self.User_Exchange_Name, routing_key='', body=self.user_name+"Is editing")
+                    exchange=self.User_Exchange_Name, routing_key='', body=self.user_name+" is editing")
                 self.text.configure(state='normal')
                 self.button.configure(text='Stop Editing')
                 self.old_text = self.text.get("1.0", tk.END)
